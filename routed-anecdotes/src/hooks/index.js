@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import anecdoteService from "../services/anecdotes";
 
 export const useField = (type) => {
   const [value, setValue] = useState("");
@@ -9,16 +10,31 @@ export const useField = (type) => {
 
   const reset = () => {
     setValue("");
-  }
+  };
 
   return {
     type,
     value,
     onChange,
-    reset
+    reset,
   };
 };
 
-export const useAnotherHook = () => {
-  // ...
+export const useAnecdotes = () => {
+  const [anecdotes, setAnecdotes] = useState([]);
+
+  useEffect(() => {
+    const fetchAnecdotes = async () => {
+      try {
+        const data = await anecdoteService.getAll();
+        setAnecdotes(data);
+      } catch (error) {
+        console.error("Error fetching anecdotes:", error);
+      }
+    };
+
+    fetchAnecdotes();
+  }, []);
+
+  return { anecdotes };
 };

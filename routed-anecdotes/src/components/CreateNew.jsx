@@ -5,6 +5,9 @@ const CreateNew = ({ addNew }) => {
   const nameField = useField("text");
   const contentField = useField("text");
   const infoField = useField("text");
+  const { reset: resetName, ...nameInput } = nameField;
+  const { reset: resetContent, ...contentInput } = contentField;
+  const { reset: resetInfo, ...infoInput } = infoField;
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -20,9 +23,9 @@ const CreateNew = ({ addNew }) => {
 
   const handleReset = (e) => {
     e.preventDefault();
-    nameField.reset();
-    contentField.reset();
-    infoField.reset();
+    resetName();
+    resetContent();
+    resetInfo();
   };
 
   return (
@@ -31,15 +34,15 @@ const CreateNew = ({ addNew }) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name="content" {...contentField} />
+          <input name="content" {...contentInput} />
         </div>
         <div>
           author
-          <input name="author" {...nameField} />
+          <input name="author" {...nameInput} />
         </div>
         <div>
           url for more info
-          <input name="info" {...infoField} />
+          <input name="info" {...infoInput} />
         </div>
         <button>create</button>
         <button

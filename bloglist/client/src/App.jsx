@@ -15,6 +15,7 @@ import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import ErrorBoundary from './components/ErrorBoundary'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -139,50 +140,56 @@ const App = () => {
         </Toolbar>
       </AppBar>
 
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Bloglist
-              blogs={blogs}
-              addBlog={addBlog}
-              addLikes={addLikes}
-              deleteBlog={deleteBlog}
-              user={user}
-              notification={notification}
-            />
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            user ? (
-              <Navigate replace to="/" />
-            ) : (
-              <LoginForm
-                username={username}
-                password={password}
-                handleUsernameChange={({ target }) => setUsername(target.value)}
-                handlePasswordChange={({ target }) => setPassword(target.value)}
-                handleSubmit={handleLogin}
+      <ErrorBoundary>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Bloglist
+                blogs={blogs}
+                addBlog={addBlog}
+                addLikes={addLikes}
+                deleteBlog={deleteBlog}
+                user={user}
                 notification={notification}
               />
-            )
-          }
-        />
-        <Route
-          path="/blogs/:id"
-          element={
-            <Blog
-              blog={blogToShow}
-              addLikes={addLikes}
-              deleteBlog={deleteBlog}
-              user={user}
-            />
-          }
-        />
-        <Route path="/create" element={<BlogForm createBlog={addBlog} />} />
-      </Routes>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              user ? (
+                <Navigate replace to="/" />
+              ) : (
+                <LoginForm
+                  username={username}
+                  password={password}
+                  handleUsernameChange={({ target }) =>
+                    setUsername(target.value)
+                  }
+                  handlePasswordChange={({ target }) =>
+                    setPassword(target.value)
+                  }
+                  handleSubmit={handleLogin}
+                  notification={notification}
+                />
+              )
+            }
+          />
+          <Route
+            path="/blogs/:id"
+            element={
+              <Blog
+                blog={blogToShow}
+                addLikes={addLikes}
+                deleteBlog={deleteBlog}
+                user={user}
+              />
+            }
+          />
+          <Route path="/create" element={<BlogForm createBlog={addBlog} />} />
+        </Routes>
+      </ErrorBoundary>
     </Container>
   )
 }

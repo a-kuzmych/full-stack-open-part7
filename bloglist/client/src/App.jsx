@@ -13,6 +13,7 @@ import Bloglist from './components/Bloglist'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
+import PageNotFound from './components/PageNotFound'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import ErrorBoundary from './components/ErrorBoundary'
@@ -188,6 +189,7 @@ const App = () => {
             }
           />
           <Route path="/create" element={<BlogForm createBlog={addBlog} />} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </ErrorBoundary>
     </Container>

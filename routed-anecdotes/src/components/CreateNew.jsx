@@ -47,11 +47,8 @@ const CreateNew = () => {
           url for more info
           <input name="info" {...infoInput} />
         </div>
-        <button type="submit" onClick={handleSubmit}>create</button>
-        <button
-          type="button"
-          onClick={handleReset}
-        >
+        <button type="submit">create</button>
+        <button type="button" onClick={handleReset}>
           reset
         </button>
       </form>

@@ -35,11 +35,11 @@ export const useAnecdotes = () => {
 
     fetchAnecdotes();
   }, []);
-  
+
   const addAnecdote = async (anecdote) => {
     try {
       const newAnecdote = await anecdoteService.createNew(anecdote);
-      setAnecdotes((prevAnecdotes) => [...prevAnecdotes, newAnecdote]);
+      setAnecdotes(anecdotes.concat(newAnecdote));
     } catch (error) {
       console.error("Error adding anecdote:", error);
     }
@@ -47,10 +47,8 @@ export const useAnecdotes = () => {
 
   const deleteAnecdote = async (id) => {
     try {
-      if (window.confirm("Are you sure you want to delete this anecdote?")) {
-        await anecdoteService.remove(id);
-        setAnecdotes((prevAnecdotes) => prevAnecdotes.filter((anecdote) => anecdote.id !== id));
-      }
+      await anecdoteService.remove(id);
+      setAnecdotes(anecdotes.filter((a) => a.id !== id));
     } catch (error) {
       console.error("Error deleting anecdote:", error);
     }

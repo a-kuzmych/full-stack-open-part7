@@ -1,18 +1,21 @@
 import { useNavigate } from "react-router-dom";
-import { useField } from "../hooks";
+import { useField, useAnecdotes } from "../hooks";
 
-const CreateNew = ({ addNew }) => {
+const CreateNew = () => {
   const nameField = useField("text");
   const contentField = useField("text");
   const infoField = useField("text");
   const { reset: resetName, ...nameInput } = nameField;
   const { reset: resetContent, ...contentInput } = contentField;
   const { reset: resetInfo, ...infoInput } = infoField;
+
+  const { addAnecdote } = useAnecdotes();
+
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    addNew({
+    await addAnecdote({
       content: contentField.value,
       author: nameField.value,
       info: infoField.value,
@@ -44,7 +47,7 @@ const CreateNew = ({ addNew }) => {
           url for more info
           <input name="info" {...infoInput} />
         </div>
-        <button>create</button>
+        <button type="submit" onClick={handleSubmit}>create</button>
         <button
           type="button"
           onClick={handleReset}

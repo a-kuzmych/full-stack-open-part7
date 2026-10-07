@@ -35,6 +35,15 @@ export const useAnecdotes = () => {
 
     fetchAnecdotes();
   }, []);
+  
+  const addAnecdote = async (anecdote) => {
+    try {
+      const newAnecdote = await anecdoteService.createNew(anecdote);
+      setAnecdotes((prevAnecdotes) => [...prevAnecdotes, newAnecdote]);
+    } catch (error) {
+      console.error("Error adding anecdote:", error);
+    }
+  };
 
-  return { anecdotes };
+  return { anecdotes, addAnecdote };
 };

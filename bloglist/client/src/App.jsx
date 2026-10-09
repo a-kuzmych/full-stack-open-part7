@@ -18,17 +18,19 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import ErrorBoundary from './components/ErrorBoundary'
 import { useNotificationActions } from './NotificationStore'
+import { useBlogs, useBlogActions } from './BlogStore'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  const blogs = useBlogs()
+  const { initialize, create, update, remove } = useBlogActions()
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const { showNotification } = useNotificationActions()
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
-  }, [])
+    initialize()
+  }, [initialize])
 
   const navigate = useNavigate()
 
@@ -63,8 +65,7 @@ const App = () => {
   }
 
   const addBlog = async (blogObject) => {
-    const createdBlog = await blogService.create(blogObject)
-    setBlogs(blogs.concat(createdBlog))
+    const createdBlog = await create(blogObject)
 
     showNotification(
       `a new blog ${createdBlog.title} by ${createdBlog.author} added`,
@@ -72,10 +73,7 @@ const App = () => {
   }
 
   const addLikes = async (blogId, updatedBlog) => {
-    const returnedBlog = await blogService.update(blogId, updatedBlog)
-    const originalBlog = blogs.find((b) => b.id === blogId)
-    returnedBlog.user = originalBlog.user
-    setBlogs(blogs.map((b) => (b.id === blogId ? returnedBlog : b)))
+    await update(blogId, updatedBlog)
   }
 
   const deleteBlog = async (blogId) => {
@@ -85,8 +83,7 @@ const App = () => {
         `Remove blog "${blogToRemove.title}" by ${blogToRemove.author}?`,
       )
     ) {
-      await blogService.remove(blogId)
-      setBlogs(blogs.filter((b) => b.id !== blogId))
+      await remove(blogId)
       showNotification(`Blog "${blogToRemove.title}" removed successfully`)
     }
   }

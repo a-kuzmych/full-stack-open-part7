@@ -7,12 +7,11 @@ const LoginForm = ({
   handlePasswordChange,
   username,
   password,
-  notification,
 }) => {
   return (
     <Container>
       <h2>Log in to application</h2>
-      <Notification message={notification.message} type={notification.type} />
+      <Notification />
       <form onSubmit={handleSubmit}>
         <TextField
           variant="standard"

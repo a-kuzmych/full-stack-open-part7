@@ -10,7 +10,7 @@ import {
 } from '@mui/material'
 import Notification from './Notification'
 
-const Bloglist = ({ blogs, notification }) => {
+const Bloglist = ({ blogs }) => {
   const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes)
 
   return (
@@ -19,7 +19,7 @@ const Bloglist = ({ blogs, notification }) => {
         Blogs
       </Typography>
 
-      <Notification message={notification.message} type={notification.type} />
+      <Notification />
       <TableContainer component={Paper} sx={{ boxShadow: 2, borderRadius: 2 }}>
         <Table>
           <TableBody>

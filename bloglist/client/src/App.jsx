@@ -17,16 +17,14 @@ import PageNotFound from './components/PageNotFound'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import ErrorBoundary from './components/ErrorBoundary'
+import { useNotificationActions } from './NotificationStore'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [notification, setNotification] = useState({
-    message: null,
-    type: 'success',
-  })
+  const { showNotification } = useNotificationActions()
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
@@ -54,10 +52,7 @@ const App = () => {
       setPassword('')
     } catch {
       setUser(null)
-      setNotification({ message: 'wrong username or password', type: 'error' })
-      setTimeout(() => {
-        setNotification({ message: null, type: 'success' })
-      }, 5000)
+      showNotification('wrong username or password', 'error')
     }
   }
 
@@ -71,13 +66,9 @@ const App = () => {
     const createdBlog = await blogService.create(blogObject)
     setBlogs(blogs.concat(createdBlog))
 
-    setNotification({
-      message: `a new blog ${createdBlog.title} by ${createdBlog.author} added`,
-      type: 'success',
-    })
-    setTimeout(() => {
-      setNotification({ message: null, type: 'success' })
-    }, 5000)
+    showNotification(
+      `a new blog ${createdBlog.title} by ${createdBlog.author} added`,
+    )
   }
 
   const addLikes = async (blogId, updatedBlog) => {
@@ -96,13 +87,7 @@ const App = () => {
     ) {
       await blogService.remove(blogId)
       setBlogs(blogs.filter((b) => b.id !== blogId))
-      setNotification({
-        message: `Blog "${blogToRemove.title}" removed successfully`,
-        type: 'success',
-      })
-      setTimeout(() => {
-        setNotification({ message: null, type: 'success' })
-      }, 5000)
+      showNotification(`Blog "${blogToRemove.title}" removed successfully`)
     }
   }
 
@@ -152,7 +137,6 @@ const App = () => {
                 addLikes={addLikes}
                 deleteBlog={deleteBlog}
                 user={user}
-                notification={notification}
               />
             }
           />
@@ -172,7 +156,6 @@ const App = () => {
                     setPassword(target.value)
                   }
                   handleSubmit={handleLogin}
-                  notification={notification}
                 />
               )
             }

@@ -5,7 +5,7 @@ import {
   Link,
   Navigate,
   useMatch,
-  useNavigate,
+  useNavigate
 } from 'react-router-dom'
 import '../index.css'
 import { Container, AppBar, Toolbar, Typography, Button } from '@mui/material'
@@ -13,6 +13,8 @@ import Bloglist from './components/Bloglist'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
+import Userlist from './components/Userlist'
+import User from './components/User'
 import PageNotFound from './components/PageNotFound'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -66,7 +68,7 @@ const App = () => {
     const createdBlog = await create(blogObject)
 
     showNotification(
-      `a new blog ${createdBlog.title} by ${createdBlog.author} added`,
+      `a new blog ${createdBlog.title} by ${createdBlog.author} added`
     )
   }
 
@@ -78,7 +80,7 @@ const App = () => {
     const blogToRemove = blogs.find((b) => b.id === blogId)
     if (
       window.confirm(
-        `Remove blog "${blogToRemove.title}" by ${blogToRemove.author}?`,
+        `Remove blog "${blogToRemove.title}" by ${blogToRemove.author}?`
       )
     ) {
       await remove(blogId)
@@ -103,9 +105,14 @@ const App = () => {
             blogs
           </Button>
           {user && (
-            <Button color="inherit" component={Link} to="/create">
-              create new
-            </Button>
+            <>
+              <Button color="inherit" component={Link} to="/users">
+                users
+              </Button>
+              <Button color="inherit" component={Link} to="/create">
+                create new
+              </Button>
+            </>
           )}
           {user ? (
             <span>
@@ -167,6 +174,8 @@ const App = () => {
             }
           />
           <Route path="/create" element={<BlogForm createBlog={addBlog} />} />
+          <Route path="/users" element={<Userlist />} />
+          <Route path="/users/:id" element={<User />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </ErrorBoundary>

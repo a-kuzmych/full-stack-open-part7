@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import userService from './services/users'
 
 const storedUser = () => {
   const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -7,6 +8,7 @@ const storedUser = () => {
 
 const useUserStore = create((set) => ({
   user: null,
+  users: [],
   actions: {
     initialize: () => {
       const user = storedUser()
@@ -21,8 +23,13 @@ const useUserStore = create((set) => ({
       window.localStorage.removeItem('loggedBlogappUser')
       set({ user: null })
     },
+    initializeUsers: async () => {
+      const users = await userService.getAll()
+      set({ users })
+    },
   },
 }))
 
 export const useUser = () => useUserStore((state) => state.user)
+export const useUsers = () => useUserStore((state) => state.users)
 export const useUserActions = () => useUserStore((state) => state.actions)

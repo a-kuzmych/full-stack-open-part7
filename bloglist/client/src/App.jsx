@@ -19,11 +19,13 @@ import loginService from './services/login'
 import ErrorBoundary from './components/ErrorBoundary'
 import { useNotificationActions } from './NotificationStore'
 import { useBlogs, useBlogActions } from './BlogStore'
+import { useUser, useUserActions } from './UserStore'
 
 const App = () => {
   const blogs = useBlogs()
   const { initialize, create, update, remove } = useBlogActions()
-  const [user, setUser] = useState(null)
+  const user = useUser()
+  const { initialize: initializeUser, setUser, clearUser } = useUserActions()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const { showNotification } = useNotificationActions()
@@ -35,32 +37,28 @@ const App = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
+    const storedUser = initializeUser()
+    if (storedUser) {
+      blogService.setToken(storedUser.token)
     }
-  }, [])
+  }, [initializeUser])
 
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
-      const user = await loginService.login({ username, password })
-      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
-      blogService.setToken(user.token)
-      setUser(user)
+      const loggedInUser = await loginService.login({ username, password })
+      setUser(loggedInUser)
+      blogService.setToken(loggedInUser.token)
       setUsername('')
       setPassword('')
     } catch {
-      setUser(null)
+      clearUser()
       showNotification('wrong username or password', 'error')
     }
   }
 
   const handleLogout = () => {
-    window.localStorage.removeItem('loggedBlogappUser')
-    setUser(null)
+    clearUser()
     navigate('/')
   }
 

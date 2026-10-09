@@ -9,6 +9,7 @@ import {
   TableCell,
   TableHead,
   Paper,
+  Chip,
 } from '@mui/material'
 import { useUserActions, useUsers } from '../UserStore'
 
@@ -29,19 +30,25 @@ const Userlist = () => {
       >
         Users
       </Typography>
-      <TableContainer component={Paper} sx={{ boxShadow: 2, borderRadius: 2 }}>
+      <Typography color="text.secondary" sx={{ mb: 2 }}>
+        Browse users and the blogs they have created.
+      </Typography>
+      <TableContainer
+        component={Paper}
+        sx={{ boxShadow: 2, borderRadius: 2, overflow: 'hidden' }}
+      >
         <Table>
           <TableHead>
-            <TableRow sx={{fontWeight: 'bold', backgroundColor: '#f5f5f5'}}>
-              <TableCell>Name</TableCell>
-              <TableCell>Username</TableCell>
-              <TableCell>Blogs created</TableCell>
+            <TableRow sx={{ backgroundColor: 'action.hover' }}>
+              <TableCell sx={{ fontWeight: 700 }}>Name</TableCell>
+              <TableCell sx={{ fontWeight: 700 }}>Username</TableCell>
+              <TableCell sx={{ fontWeight: 700 }}>Blogs created</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {users.map((user) => (
               <TableRow key={user.id} hover>
-                <TableCell>
+                <TableCell sx={{ fontWeight: 500 }}>
                   <Link
                     to={`/users/${user.id}`}
                     style={{
@@ -55,7 +62,11 @@ const Userlist = () => {
                 </TableCell>
                 <TableCell>{user.username}</TableCell>
                 <TableCell>
-                  {user.blogs.length}
+                  <Chip
+                    label={user.blogs.length}
+                    size="small"
+                    color={user.blogs.length > 0 ? 'primary' : 'default'}
+                  />
                 </TableCell>
               </TableRow>
             ))}

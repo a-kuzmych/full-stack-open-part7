@@ -1,6 +1,13 @@
 import { useEffect } from 'react'
 import { useUserActions, useUsers } from '../UserStore'
-import { Typography, List, ListItem, ListItemText } from '@mui/material'
+import {
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
+  Box,
+} from '@mui/material'
 import { useParams } from 'react-router-dom'
 
 const User = () => {
@@ -20,21 +27,27 @@ const User = () => {
   }
 
   return (
-    <div>
+    <Box sx={{ mt: 3 }}>
       <Typography variant="h4" gutterBottom sx={{ mt: 3, mb: 2 }}>
         {user.name}
       </Typography>
-      <Typography variant="h6" gutterBottom sx={{ mt: 2, mb: 1 }}>
+      <Typography variant="h6" gutterBottom sx={{ mt: 3, mb: 1 }}>
         added blogs
       </Typography>
-      <List>
-        {user.blogs.map((blog) => (
-          <ListItem key={blog.id} dense disablePadding>
-            <ListItemText primary={blog.title} />
-          </ListItem>
-        ))}
-      </List>
-    </div>
+      <Paper variant="outlined" sx={{ borderRadius: 2 }}>
+        <List disablePadding>
+          {user.blogs.map((blog, index) => (
+            <ListItem
+              key={blog.id}
+              divider={index < user.blogs.length - 1}
+              sx={{ py: 1.5, px: 2 }}
+            >
+              <ListItemText primary={blog.title} />
+            </ListItem>
+          ))}
+        </List>
+      </Paper>
+    </Box>
   )
 }
 

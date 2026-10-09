@@ -7,7 +7,11 @@ import {
   Button,
   Box,
   Link,
-  TextField
+  TextField,
+  List,
+  ListItem,
+  ListItemText,
+  Divider
 } from '@mui/material'
 
 const Blog = ({ blog, addLikes, deleteBlog, addComment, user }) => {
@@ -100,30 +104,50 @@ const Blog = ({ blog, addLikes, deleteBlog, addComment, user }) => {
           )}
         </Box>
 
-        <Box sx={{ mt: 3 }}>
-          <Typography variant="h6" gutterBottom>
+        <Box sx={{ mt: 4, pt: 3, borderTop: '1px solid', borderColor: 'divider' }}>
+          <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
             comments
           </Typography>
 
-          <Box component="form" onSubmit={handleComment} sx={{ mb: 2 }}>
+          <Box
+            component="form"
+            onSubmit={handleComment}
+            sx={{ display: 'flex', gap: 1, mb: 2 }}
+          >
             <TextField
               label="comment"
               value={comment}
               onChange={({ target }) => setComment(target.value)}
               size="small"
+              fullWidth
             />
-            <Button type="submit" variant="contained" sx={{ ml: 1 }}>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ whiteSpace: 'nowrap' }}
+            >
               add comment
             </Button>
           </Box>
 
-          <ul style={{ paddingLeft: '20px', margin: 0 }}>
+          <List
+            disablePadding
+            sx={{
+              border: '1px solid',
+              borderColor: 'divider',
+              borderRadius: 1,
+              overflow: 'hidden',
+            }}
+          >
             {(blog.comments || []).map((c, index) => (
-              <li key={index} style={{ marginBottom: '4px' }}>
-                {c}
-              </li>
+              <Box key={index}>
+                {index > 0 && <Divider />}
+                <ListItem sx={{ py: 1 }}>
+                  <ListItemText primary={c} />
+                </ListItem>
+              </Box>
             ))}
-          </ul>
+          </List>
         </Box>
       </CardContent>
     </Card>

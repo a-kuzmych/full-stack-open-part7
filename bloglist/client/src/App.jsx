@@ -25,7 +25,7 @@ import { useUser, useUserActions } from './UserStore'
 
 const App = () => {
   const blogs = useBlogs()
-  const { initialize, create, update, remove } = useBlogActions()
+  const { initialize, create, update, remove, addComment } = useBlogActions()
   const user = useUser()
   const { initialize: initializeUser, setUser, clearUser } = useUserActions()
   const [username, setUsername] = useState('')
@@ -169,6 +169,7 @@ const App = () => {
                 blog={blogToShow}
                 addLikes={addLikes}
                 deleteBlog={deleteBlog}
+                addComment={addComment}
                 user={user}
               />
             }

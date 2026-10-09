@@ -104,15 +104,13 @@ const App = () => {
           <Button color="inherit" component={Link} to="/">
             blogs
           </Button>
+          <Button color="inherit" component={Link} to="/users">
+            users
+          </Button>
           {user && (
-            <>
-              <Button color="inherit" component={Link} to="/users">
-                users
-              </Button>
-              <Button color="inherit" component={Link} to="/create">
-                create new
-              </Button>
-            </>
+            <Button color="inherit" component={Link} to="/create">
+              create new
+            </Button>
           )}
           {user ? (
             <span>

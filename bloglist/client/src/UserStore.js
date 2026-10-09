@@ -1,26 +1,22 @@
 import { create } from 'zustand'
 import userService from './services/users'
-
-const storedUser = () => {
-  const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-  return loggedUserJSON ? JSON.parse(loggedUserJSON) : null
-}
+import { getUser, saveUser, removeUser } from './services/persistentUser'
 
 const useUserStore = create((set) => ({
   user: null,
   users: [],
   actions: {
     initialize: () => {
-      const user = storedUser()
+      const user = getUser()
       set({ user })
       return user
     },
     setUser: (user) => {
-      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+      saveUser(user)
       set({ user })
     },
     clearUser: () => {
-      window.localStorage.removeItem('loggedBlogappUser')
+      removeUser()
       set({ user: null })
     },
     initializeUsers: async () => {
